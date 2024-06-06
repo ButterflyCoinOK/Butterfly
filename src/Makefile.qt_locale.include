@@ -1,0 +1,22 @@
+QT_TS = \
+  qt/locale/butterfly_ar.ts \
+  qt/locale/butterfly_bg.ts \
+  qt/locale/butterfly_de.ts \
+  qt/locale/butterfly_en.ts \
+  qt/locale/butterfly_es.ts \
+  qt/locale/butterfly_fi.ts \
+  qt/locale/butterfly_fr.ts \
+  qt/locale/butterfly_it.ts \
+  qt/locale/butterfly_ja.ts \
+  qt/locale/butterfly_ko.ts \
+  qt/locale/butterfly_nl.ts \
+  qt/locale/butterfly_pl.ts \
+  qt/locale/butterfly_pt.ts \
+  qt/locale/butterfly_ro.ts \
+  qt/locale/butterfly_ru.ts \
+  qt/locale/butterfly_sk.ts \
+  qt/locale/butterfly_th.ts \
+  qt/locale/butterfly_tr.ts \
+  qt/locale/butterfly_vi.ts \
+  qt/locale/butterfly_zh_CN.ts \
+  qt/locale/butterfly_zh_TW.ts

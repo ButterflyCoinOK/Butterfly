@@ -1,0 +1,6 @@
+usr/local/bin/butterfly-qt usr/bin
+share/pixmaps/butterfly32.xpm usr/share/pixmaps
+share/pixmaps/butterfly16.xpm usr/share/pixmaps
+share/pixmaps/butterfly128.png usr/share/pixmaps
+debian/butterfly-qt.desktop usr/share/applications
+debian/butterfly-qt.protocol usr/share/kde4/services/

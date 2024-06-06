@@ -1,0 +1,45 @@
+# syntax=docker/dockerfile:1.3
+FROM ubuntu:focal
+LABEL maintainer="Butterfly Developers <dev@butterfly.org>"
+LABEL description="Dockerised Butterfly"
+
+ARG USER_ID
+ARG GROUP_ID
+ARG TAG
+
+ENV HOME /home/butterfly
+
+# add user with specified (or default) user/group ids
+ENV USER_ID ${USER_ID:-1000}
+ENV GROUP_ID ${GROUP_ID:-1000}
+RUN groupadd -g ${GROUP_ID} butterfly && \
+    useradd -u ${USER_ID} -g butterfly -s /bin/bash -m -d /home/butterfly butterfly  && \
+    mkdir /home/butterfly/.butterfly && \
+    chown ${USER_ID}:${GROUP_ID} -R /home/butterfly
+
+RUN apt-get update && \
+    apt-get -y install --no-install-recommends \
+    wget \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY butterfly-binaries/${TAG}/butterfly* /home/butterfly
+
+RUN mach=$(uname -m) \
+      && case $mach in aarch64) arch="aarch64-linux-gnu"; ;; x86_64) arch="x86_64-linux-gnu"; ;;  *) echo "ERROR: Machine type $mach not supported."; ;; esac \
+      && cd /home/butterfly \
+      && tar xvzf butterfly*$arch.tar.gz \
+      && echo $(ls -1 /home/butterfly) \
+      && cp butterfly-*/bin/* /usr/local/bin \
+      && rm -rf butterfly*
+
+USER butterfly
+
+VOLUME ["/home/butterfly"]
+
+COPY butterfly/contrib/containers/deploy/docker-entrypoint.sh /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+EXPOSE 17753 9999 27753 27754
+
+WORKDIR /home/butterfly

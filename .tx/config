@@ -1,0 +1,7 @@
+[main]
+host = https://www.transifex.com
+
+[butterfly.butterfly_ents]
+file_filter = src/qt/locale/butterfly_<lang>.ts
+source_file = src/qt/locale/butterfly_en.xlf
+source_lang = en
