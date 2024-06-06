@@ -1,9 +1,6 @@
 Butterfly Core staging tree 18.0
 ===========================
 
-|CI|master|develop|
-|-|-|-|
-|Gitlab|[![Build Status](https://gitlab.com/butterflypay/butterfly/badges/master/pipeline.svg)](https://gitlab.com/butterflypay/butterfly/-/tree/master)|[![Build Status](https://gitlab.com/butterflypay/butterfly/badges/develop/pipeline.svg)](https://gitlab.com/butterflypay/butterfly/-/tree/develop)|
 
 https://www.butterfly.org
 
