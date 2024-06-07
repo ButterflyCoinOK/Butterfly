@@ -2,10 +2,10 @@ Butterfly Core staging tree 18.0
 ===========================
 
 
-[https://www.butterflyc.tech](https://butterflyc.tech/)]
+[https://www.butterflyc.tech](https://butterflyc.tech/)
 
 For an immediately usable, binary version of the Butterfly Core software, see
-https://www.butterfly.org/downloads/.
+https://butterflyc.tech/#download-wallet.
 
 Further information about Butterfly Core is available in the [doc folder](/doc).
 
