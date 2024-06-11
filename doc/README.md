@@ -24,17 +24,14 @@ Drag Butterfly Core to your applications folder, and then run Butterfly Core.
 
 ### Need Help?
 
-* See the [Butterfly documentation](https://docs.butterfly.org)
-for help and more information.
-* Ask for help on [Butterfly Discord](http://staybutterflyy.com)
-* Ask for help on the [Butterfly Forum](https://butterflyc.tech/forum)
+* Ask for help on [Butterfly Discord](https://discord.gg/JCR8TpfK)
+* Ask for help on the [Butterfly telegram](https://t.me/ButterflyCoin24)
 
 Building
 ---------------------
 The following are developer notes on how to build Butterfly Core on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
 
 - [Dependencies](dependencies.md)
-- [macOS Build Notes](build-osx.md)
 - [Unix Build Notes](build-unix.md)
 - [Windows Build Notes](build-windows.md)
 - [OpenBSD Build Notes](build-openbsd.md)
@@ -60,11 +57,9 @@ The Butterfly Core repo's [root README](/README.md) contains relevant informatio
 - [Benchmarking](benchmarking.md)
 
 ### Resources
-* See the [Butterfly Developer Documentation](https://butterfly.readme.io/)
-  for technical specifications and implementation details.
-* Discuss on the [Butterfly Forum](https://butterflyc.tech/forum), in the Development & Technical Discussion board.
-* Discuss on [Butterfly Discord](http://staybutterflyy.com)
-* Discuss on [Butterfly Developers Discord](http://chat.butterflydevs.org/)
+* Discuss on the [Butterfly Forum](https://butterflyc.tech), in the Development & Technical Discussion board.
+* Discuss on [Butterfly Discord](https://discord.gg/JCR8TpfK)
+
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)
