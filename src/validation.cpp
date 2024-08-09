@@ -128,6 +128,12 @@ CChain& ChainActive()
     return ::ChainstateActive().m_chain;
 }
 
+int GetBlockHeight()
+{
+    LOCK(::cs_main);
+    return ::ChainActive().Height();
+}
+
 /**
  * Mutex to guard access to validation specific variables, such as reading
  * or changing the chainstate.
@@ -648,6 +654,23 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
     std::unique_ptr<CTxMemPoolEntry>& entry = ws.m_entry;
     CAmount& nModifiedFees = ws.m_modified_fees;
 
+    if (tx.nType == TRANSACTION_PROVIDER_REGISTER) {
+        CProRegTx proTx;
+        if (GetTxPayload(tx, proTx)) {
+            if (proTx.nType == MnType::Evo) {
+                return false;
+            }
+        }
+    } else if (tx.nType == TRANSACTION_PROVIDER_UPDATE_SERVICE) {
+        CProUpServTx proTx;
+        if (GetTxPayload(tx, proTx)) {
+            auto dmn = deterministicMNManager->GetListAtChainTip().GetMN(proTx.proTxHash);
+            if (dmn->nType == MnType::Evo) {
+                return false;
+            }
+        }
+    }
+
     if (!CheckTransaction(tx, state))
         return false; // state filled in by CheckTransaction
 
@@ -1126,9 +1149,8 @@ static std::pair<CAmount, CAmount> GetBlockSubsidyHelper(int nPrevBits, int nPre
 
     if (nPrevHeight == 0) {
         nSubsidyBase = 3000000;
-    }
-    else {
-	nSubsidyBase = 12;
+    } else {
+	    nSubsidyBase = 12;
     }
 
     CAmount nSubsidy = nSubsidyBase * COIN;
@@ -1146,9 +1168,13 @@ static std::pair<CAmount, CAmount> GetBlockSubsidyHelper(int nPrevBits, int nPre
 
     CAmount nSuperblockPart{};
     // Hard fork to reduce the block reward by 10 extra percent (allowing budget/superblocks)
-    if (nPrevHeight > consensusParams.nBudgetPaymentsStartBlock) {
+    if (nPrevHeight <= consensusParams.nBudgetPaymentsStartBlock) {
+        nSuperblockPart = 0 * COIN;
+    } else if (nPrevHeight < consensusParams.nForkHeight) {
         // Once v20 is active, the treasury is 20% instead of 10%
         nSuperblockPart = nSubsidy / (fV20Active ? 5 : 10);
+    } else {
+        nSuperblockPart = 0.12 * COIN;
     }
     return {nSubsidy - nSuperblockPart, nSuperblockPart};
 }
@@ -1165,21 +1191,41 @@ CAmount GetBlockSubsidyInner(int nPrevBits, int nPrevHeight, const Consensus::Pa
     return nSubsidy;
 }
 
-CAmount GetBlockSubsidy(const CBlockIndex* const pindex, const Consensus::Params& consensusParams)
+CAmount GetBlockSubsidy(const CBlockIndex* const pindex, const Consensus::Params& consensusParams, int nHeight)
 {
     if (pindex->pprev == nullptr) return Params().GenesisBlock().vtx[0]->GetValueOut();
     bool isV20Active = llmq::utils::IsV20Active(pindex->pprev);
-    return GetBlockSubsidyInner(pindex->pprev->nBits, pindex->pprev->nHeight, consensusParams, isV20Active);
+    return GetBlockSubsidyInner(pindex->pprev->nBits, nHeight - 1, consensusParams, isV20Active);
 }
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue, bool fV20Active)
 {
-    CAmount ret = blockValue * 0.78;
     const int nReallocActivationHeight = Params().GetConsensus().BRRHeight;
 
+    if (nHeight > Params().GetConsensus().nForkHeight) {
+        if (nHeight <= 146200) {
+            return static_cast<CAmount>(blockValue * 0.7492);
+        } else if (nHeight > 146200 && nHeight <= 189400) {
+            return static_cast<CAmount>(blockValue * 0.7652);
+        } else if (nHeight > 189400 && nHeight <= 232600) {
+            return static_cast<CAmount>(blockValue * 0.7795);
+        } else if (nHeight > 232600 && nHeight <= 275800) {
+            return static_cast<CAmount>(blockValue * 0.7921);
+        } else if (nHeight > 275800 && nHeight <= 319000) {
+            return static_cast<CAmount>(blockValue * 0.8039);
+        } else if (nHeight > 319000 && nHeight <= 362200) {
+            return static_cast<CAmount>(blockValue * 0.8148);
+        } else {
+            return static_cast<CAmount>(blockValue * 0.8241);
+        }
+    }
+
+    CAmount ret = blockValue * 0.78;
 
     if (nHeight < nReallocActivationHeight) {
         // Block Reward Realocation is not activated yet, nothing to do
+        return ret;
+    } else if (nHeight > 47000 && nHeight <= Params().GetConsensus().nForkHeight) {
         return ret;
     }
 
@@ -1189,8 +1235,6 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue, bool fV20Active)
 
     if (nHeight < nReallocStart) {
         // Activated but we have to wait for the next cycle to start realocation, nothing to do
-        return ret;
-    } else if (nHeight > 47000) {
         return ret;
     }
 
@@ -2329,7 +2373,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     // BTFC : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
 
     // TODO: resync data (both ways?) and try to reprocess this block later.
-    CAmount blockSubsidy = GetBlockSubsidy(pindex, m_params.GetConsensus());
+    CAmount blockSubsidy = GetBlockSubsidy(pindex, m_params.GetConsensus(), pindex->nHeight);
     CAmount feeReward = nFees;
     std::string strError = "";
 
@@ -3910,6 +3954,22 @@ static bool ContextualCheckBlock(const CBlock& block, BlockValidationState& stat
                                  strprintf("Transaction check failed (tx hash %s) %s", tx->GetHash().ToString(), tx_state.GetDebugMessage()));
         }
         nSigOps += GetLegacySigOpCount(*tx);
+    }
+
+    CBlockIndex* pindex = ::ChainActive().Tip();
+
+    if (nHeight > Params().GetConsensus().DevRewardStartHeight) {
+        // "stage 2" interval between first and second halvings
+        CScript devPayoutScript = GetScriptForDestination(DecodeDestination(consensusParams.DevelopmentFundAddress));
+        CAmount devPayoutValue = (GetBlockSubsidy(pindex, consensusParams, pindex->nHeight + 1) * consensusParams.DevelopementFundShare) / 100;
+
+        bool found = false;
+        for (const CTxOut& txout : block.vtx[0]->vout) {
+            if ((found = txout.scriptPubKey == devPayoutScript && txout.nValue == devPayoutValue) == true)
+                break;
+        }
+        if (!found)
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-tx", "Developer Reward Check Failed");
     }
 
     // Check sigops

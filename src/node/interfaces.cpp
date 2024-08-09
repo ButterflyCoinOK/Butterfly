@@ -189,7 +189,7 @@ public:
     }
     bool isCollateralAmount(CAmount nAmount) override
     {
-        return CCoinJoin::IsCollateralAmount(nAmount);
+        return CCoinJoin::GetInstance().IsCollateralAmount(nAmount);
     }
     CAmount getMinCollateralAmount() override
     {

@@ -463,7 +463,13 @@ public:
     static constexpr CAmount GetCollateralAmount() { return GetSmallestDenomination() / 10; }
     static constexpr CAmount GetMaxCollateralAmount() { return GetCollateralAmount() * 4; }
 
-    static constexpr bool IsCollateralAmount(CAmount nInputAmount)
+    static CCoinJoin& GetInstance()
+    {
+        static CCoinJoin instance;
+        return instance;
+    }
+
+    static bool IsCollateralAmount(CAmount nInputAmount)
     {
         // collateral input can be anything between 1x and "max" (including both)
         return (nInputAmount >= GetCollateralAmount() && nInputAmount <= GetMaxCollateralAmount());

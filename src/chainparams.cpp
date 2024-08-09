@@ -202,6 +202,10 @@ public:
         consensus.nPowDGWHeight = 1;
         consensus.nRuleChangeActivationThreshold = 114; // 95% of 120
         consensus.nMinerConfirmationWindow = 120; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.nForkHeight = 103000;
+        consensus.DevRewardStartHeight = 103000;
+        consensus.DevelopementFundShare = 9.09;
+        consensus.DevelopmentFundAddress = "3F8vbWdJt8QsEjAhpfjhqpYaDZxTNgobKX";
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
@@ -248,27 +252,6 @@ public:
 
         genesis = CreateGenesisBlock(1717189881, 2618224, 0x1e0ffff0, 1, 12 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        // calculate main genesis block
-        //consensus.hashGenesisBlock = uint256S("0x00");
-        if (true && (genesis.GetHash() != consensus.hashGenesisBlock)) {
-		std::cout << std::string("Calculating main genesis block...\n");
-            arith_uint256 hashTarget = arith_uint256().SetCompact(genesis.nBits);
-            uint256 hash;
-            genesis.nNonce = 0;
-            while (UintToArith256(genesis.GetHash()) > hashTarget)
-            {
-                ++genesis.nNonce;
-                if (genesis.nNonce == 0)
-                {
-                    ++genesis.nTime;
-                }
-            }
-            std::cout << "Genesis block found!\n";
-            std::cout << "nonce: " << genesis.nNonce << "\n";
-            std::cout << "time: " << genesis.nTime << "\n";
-            std::cout << "blockhash: " << genesis.GetHash().ToString().c_str() << "\n";
-            std::cout << "merklehash: " << genesis.hashMerkleRoot.ToString().c_str() << "\n";
-        }
         assert(consensus.hashGenesisBlock == uint256S("0x00000d449859f4797c18f852cb579a5ac8259a6e88344d7ffce18111f238f23a"));
         assert(genesis.hashMerkleRoot == uint256S("0x9a03a941eb70bc1d12eeba45b7f4e2e6af658e0e9999c0855b0e2f999c74f435"));
 
@@ -277,8 +260,10 @@ public:
         // This is fine at runtime as we'll fall back to using them as a oneshot if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        vFixedSeeds.clear();
-        vSeeds.clear();
+        vSeeds.emplace_back("seed.butterflyc.tech");
+        vSeeds.emplace_back("seed1.butterflyc.tech");
+        vSeeds.emplace_back("seed2.butterflyc.tech");
+        vSeeds.emplace_back("seed3.butterflyc.tech");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,5);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,6);
@@ -324,6 +309,16 @@ public:
         checkpointData = {
             {
                 {0, uint256S("0x00000d449859f4797c18f852cb579a5ac8259a6e88344d7ffce18111f238f23a")},
+                {1890, uint256S("0x00000029122b21f800bbad9dc8cd8a559ca74e0746a1af0673bb00f16bcfe6a0")},
+                {7452, uint256S("0x000000514c3edcb40438f1b86188e3c6289c041d34f3d4e0e017578d2e907e3b")},
+                {15426, uint256S("0x00000000000007fd0232b7a52c9b6b5b510ce8f6a2cb44327b7bb53436ce4e52")},
+                {28745, uint256S("0x0000000000001504c682337eac412aef774b581e9125f09d32e336d4dfc35bde")},
+                {41746, uint256S("0x000000000000025a98d0d8fe0c75a2a8d8a46a3df012d4cedcf9648a4abae1be")},
+                {47001, uint256S("0x00000000000036fc47babd2b8e853fef7b560969fa475b144558ed6aa505a922")},
+                {58475, uint256S("0x00000000000008127e3a68c20a896f2872182dcc59ee4b96599e16f772911e13")},
+                {74812, uint256S("0x00000000000005c8a4ae7e052e940f04d0a18442f78e3b0d1bfc0b3674611490")},
+                {82498, uint256S("0x0000000000004641d555b5fab726bd8fe37418ff7c2ba5db7ce23ca53478f8d0")},
+                {94387, uint256S("0x0000000000000e5e6189fe544c3d3d855b84e0c37bd2c26f06f722df1c4e5cb6")},
             }
         };
 
@@ -333,8 +328,8 @@ public:
 
         // getchaintxstats 17280 00000d449859f4797c18f852cb579a5ac8259a6e88344d7ffce18111f238f23a
         chainTxData = ChainTxData{
-                1717189881, // * UNIX timestamp of last known number of transactions
-                0,   // * total number of transactions between genesis and that timestamp
+                1723166279, // * UNIX timestamp of last known number of transactions
+                280900,   // * total number of transactions between genesis and that timestamp
                             //   (the tx=... number in the ChainStateFlushed debug.log lines)
                 0,      // * estimated number of transactions per second after that timestamp
         };

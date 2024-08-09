@@ -479,102 +479,17 @@ static void protx_register_submit_help(const JSONRPCRequest& request)
 
 static void protx_register_fund_evo_help(const JSONRPCRequest& request)
 {
-    RPCHelpMan{
-        "protx register_fund_evo",
-        "\nCreates, funds and sends a ProTx to the network. The resulting transaction will move 4000 Butterfly\n"
-        "to the address specified by collateralAddress and will then function as the collateral of your\n"
-        "EvoNode.\n"
-        "A few of the limitations you see in the arguments are temporary and might be lifted after DIP3\n"
-        "is fully deployed.\n" +
-            HELP_REQUIRING_PASSPHRASE,
-        {
-            GetRpcArg("collateralAddress"),
-            GetRpcArg("ipAndPort"),
-            GetRpcArg("ownerAddress"),
-            GetRpcArg("operatorPubKey_register"),
-            GetRpcArg("votingAddress_register"),
-            GetRpcArg("operatorReward"),
-            GetRpcArg("payoutAddress_register"),
-            GetRpcArg("platformNodeID"),
-            GetRpcArg("platformP2PPort"),
-            GetRpcArg("platformHTTPPort"),
-            GetRpcArg("fundAddress"),
-            GetRpcArg("submit"),
-        },
-        {
-            RPCResult{"if \"submit\" is not set or set to true",
-                      RPCResult::Type::STR_HEX, "txid", "The transaction id"},
-            RPCResult{"if \"submit\" is set to false",
-                      RPCResult::Type::STR_HEX, "hex", "The serialized signed ProTx in hex format"},
-        },
-        RPCExamples{
-            HelpExampleCli("protx", "register_fund_evo \"" + EXAMPLE_ADDRESS[0] + "\" \"1.2.3.4:1234\" \"" + EXAMPLE_ADDRESS[1] + "\" \"93746e8731c57f87f79b3620a7982924e2931717d49540a85864bd543de11c43fb868fd63e501a1db37e19ed59ae6db4\" \"" + EXAMPLE_ADDRESS[1] + "\" 0 \"" + EXAMPLE_ADDRESS[0] + "\" \"f2dbd9b0a1f541a7c44d34a58674d0262f5feca5\" 22821 22822")},
-    }.Check(request);
+    "This Method Has Been Disabled.";
 }
 
 static void protx_register_evo_help(const JSONRPCRequest& request)
 {
-    RPCHelpMan{
-        "protx register_evo",
-        "\nSame as \"protx register_fund_evo\", but with an externally referenced collateral.\n"
-        "The collateral is specified through \"collateralHash\" and \"collateralIndex\" and must be an unspent\n"
-        "transaction output spendable by this wallet. It must also not be used by any other masternode.\n" +
-            HELP_REQUIRING_PASSPHRASE,
-        {
-            GetRpcArg("collateralHash"),
-            GetRpcArg("collateralIndex"),
-            GetRpcArg("ipAndPort"),
-            GetRpcArg("ownerAddress"),
-            GetRpcArg("operatorPubKey_register"),
-            GetRpcArg("votingAddress_register"),
-            GetRpcArg("operatorReward"),
-            GetRpcArg("payoutAddress_register"),
-            GetRpcArg("platformNodeID"),
-            GetRpcArg("platformP2PPort"),
-            GetRpcArg("platformHTTPPort"),
-            GetRpcArg("feeSourceAddress"),
-            GetRpcArg("submit"),
-        },
-        {
-            RPCResult{"if \"submit\" is not set or set to true",
-                      RPCResult::Type::STR_HEX, "txid", "The transaction id"},
-            RPCResult{"if \"submit\" is set to false",
-                      RPCResult::Type::STR_HEX, "hex", "The serialized signed ProTx in hex format"},
-        },
-        RPCExamples{
-            HelpExampleCli("protx", "register_evo \"0123456701234567012345670123456701234567012345670123456701234567\" 0 \"1.2.3.4:1234\" \"" + EXAMPLE_ADDRESS[1] + "\" \"93746e8731c57f87f79b3620a7982924e2931717d49540a85864bd543de11c43fb868fd63e501a1db37e19ed59ae6db4\" \"" + EXAMPLE_ADDRESS[1] + "\" 0 \"" + EXAMPLE_ADDRESS[0] + "\" \"f2dbd9b0a1f541a7c44d34a58674d0262f5feca5\" 22821 22822")},
-    }.Check(request);
+    "This Method Has Been Disabled.";
 }
 
 static void protx_register_prepare_evo_help(const JSONRPCRequest& request)
 {
-    RPCHelpMan{
-        "protx register_prepare_evo",
-        "\nCreates an unsigned ProTx and a message that must be signed externally\n"
-        "with the private key that corresponds to collateralAddress to prove collateral ownership.\n"
-        "The prepared transaction will also contain inputs and outputs to cover fees.\n",
-        {
-            GetRpcArg("collateralHash"),
-            GetRpcArg("collateralIndex"),
-            GetRpcArg("ipAndPort"),
-            GetRpcArg("ownerAddress"),
-            GetRpcArg("operatorPubKey_register"),
-            GetRpcArg("votingAddress_register"),
-            GetRpcArg("operatorReward"),
-            GetRpcArg("payoutAddress_register"),
-            GetRpcArg("platformNodeID"),
-            GetRpcArg("platformP2PPort"),
-            GetRpcArg("platformHTTPPort"),
-            GetRpcArg("feeSourceAddress"),
-        },
-        RPCResult{
-            RPCResult::Type::OBJ, "", "", {
-                                              {RPCResult::Type::STR_HEX, "tx", "The serialized unsigned ProTx in hex format"},
-                                              {RPCResult::Type::STR_HEX, "collateralAddress", "The collateral address"},
-                                              {RPCResult::Type::STR_HEX, "signMessage", "The string message that needs to be signed with the collateral key"},
-                                          }},
-        RPCExamples{HelpExampleCli("protx", "register_prepare_evo \"0123456701234567012345670123456701234567012345670123456701234567\" 0 \"1.2.3.4:1234\" \"" + EXAMPLE_ADDRESS[1] + "\" \"93746e8731c57f87f79b3620a7982924e2931717d49540a85864bd543de11c43fb868fd63e501a1db37e19ed59ae6db4\" \"" + EXAMPLE_ADDRESS[1] + "\" 0 \"" + EXAMPLE_ADDRESS[0] + "\" \"f2dbd9b0a1f541a7c44d34a58674d0262f5feca5\" 22821 22822")},
-    }.Check(request);
+    "This Method Has Been Disabled.";
 }
 
 static UniValue protx_register_common_wrapper(const JSONRPCRequest& request,
@@ -634,7 +549,14 @@ static UniValue protx_register_common_wrapper(const JSONRPCRequest& request,
         }
         CScript collateralScript = GetScriptForDestination(collateralDest);
 
-        CAmount fundCollateral = GetMnType(mnType).collat_amount;
+        int height = GetBlockHeight();
+        CAmount fundCollateral = 0;
+
+        if (height <= Params().GetConsensus().nForkHeight) {
+            fundCollateral = GetMnType(mnType).collat_amount;
+        } else {
+            fundCollateral = GetMnType(mnType).new_collat_amount;
+        }
         CTxOut collateralTxOut(fundCollateral, collateralScript);
         tx.vout.emplace_back(collateralTxOut);
 
@@ -730,7 +652,14 @@ static UniValue protx_register_common_wrapper(const JSONRPCRequest& request,
     }
 
     if (isFundRegister) {
-        CAmount fundCollateral = GetMnType(mnType).collat_amount;
+        CAmount fundCollateral = 0;
+        int height = GetBlockHeight();
+
+        if (height <= Params().GetConsensus().nForkHeight) {
+            fundCollateral = GetMnType(mnType).collat_amount;
+        } else {
+            fundCollateral = GetMnType(mnType).new_collat_amount;
+        }
         uint32_t collateralIndex = (uint32_t) -1;
         for (uint32_t i = 0; i < tx.vout.size(); i++) {
             if (tx.vout[i].nValue == fundCollateral) {
@@ -787,18 +716,7 @@ static UniValue protx_register_common_wrapper(const JSONRPCRequest& request,
 
 static UniValue protx_register_evo(const JSONRPCRequest& request, const ChainstateManager& chainman)
 {
-    bool isExternalRegister = request.strMethod == "protxregister_evo";
-    bool isFundRegister = request.strMethod == "protxregister_fund_evo";
-    bool isPrepareRegister = request.strMethod == "protxregister_prepare_evo";
-    if (request.strMethod.find("_hpmn") != std::string::npos) {
-        if (!IsDeprecatedRPCEnabled("hpmn")) {
-            throw JSONRPCError(RPC_METHOD_DEPRECATED, "*_hpmn methods are deprecated. Use the related *_evo methods or set -deprecatedrpc=hpmn to enable them");
-        }
-        isExternalRegister = request.strMethod == "protxregister_hpmn";
-        isFundRegister = request.strMethod == "protxregister_fund_hpmn";
-        isPrepareRegister = request.strMethod == "protxregister_prepare_hpmn";
-    }
-    return protx_register_common_wrapper(request, chainman, false, isExternalRegister, isFundRegister, isPrepareRegister, MnType::Evo);
+    return "This Method Has Been Disabled.";
 }
 
 static UniValue protx_register(const JSONRPCRequest& request, const ChainstateManager& chainman)
@@ -872,27 +790,7 @@ static void protx_update_service_help(const JSONRPCRequest& request)
 
 static void protx_update_service_evo_help(const JSONRPCRequest& request)
 {
-    RPCHelpMan{
-        "protx update_service_evo",
-        "\nCreates and sends a ProUpServTx to the network. This will update the IP address and the Platform fields\n"
-        "of an EvoNode.\n"
-        "If this is done for an EvoNode that got PoSe-banned, the ProUpServTx will also revive this EvoNode.\n" +
-            HELP_REQUIRING_PASSPHRASE,
-        {
-            GetRpcArg("proTxHash"),
-            GetRpcArg("ipAndPort_update"),
-            GetRpcArg("operatorKey"),
-            GetRpcArg("platformNodeID"),
-            GetRpcArg("platformP2PPort"),
-            GetRpcArg("platformHTTPPort"),
-            GetRpcArg("operatorPayoutAddress"),
-            GetRpcArg("feeSourceAddress"),
-        },
-        RPCResult{
-            RPCResult::Type::STR_HEX, "txid", "The transaction id"},
-        RPCExamples{
-            HelpExampleCli("protx", "update_service_evo \"0123456701234567012345670123456701234567012345670123456701234567\" \"1.2.3.4:1234\" \"5a2e15982e62f1e0b7cf9783c64cf7e3af3f90a52d6c40f6f95d624c0b1621cd\" \"f2dbd9b0a1f541a7c44d34a58674d0262f5feca5\" 22821 22822")},
-    }.Check(request);
+    "This Method Has Been Disabled.";
 }
 
 static UniValue protx_update_service_common_wrapper(const JSONRPCRequest& request, const ChainstateManager& chainman, const MnType mnType)
@@ -1583,9 +1481,6 @@ static UniValue protx_listdiff(const JSONRPCRequest& request, const ChainstateMa
         "  register                 - Create and send ProTx to network\n"
         "  register_fund            - Fund, create and send ProTx to network\n"
         "  register_prepare         - Create an unsigned ProTx\n"
-        "  register_evo             - Create and send ProTx to network for an EvoNode\n"
-        "  register_fund_evo        - Fund, create and send ProTx to network for an EvoNode\n"
-        "  register_prepare_evo     - Create an unsigned ProTx for an EvoNode\n"
         "  register_legacy          - Create a ProTx by parsing BLS using the legacy scheme and send it to network\n"
         "  register_fund_legacy     - Fund and create a ProTx by parsing BLS using the legacy scheme, then send it to network\n"
         "  register_prepare_legacy  - Create an unsigned ProTx by parsing BLS using the legacy scheme\n"
@@ -1595,7 +1490,6 @@ static UniValue protx_listdiff(const JSONRPCRequest& request, const ChainstateMa
         "  info                     - Return information about a ProTx\n"
 #ifdef ENABLE_WALLET
         "  update_service           - Create and send ProUpServTx to network\n"
-        "  update_service_evo       - Create and send ProUpServTx to network for an EvoNode\n"
         "  update_registrar         - Create and send ProUpRegTx to network\n"
         "  update_registrar_legacy  - Create ProUpRegTx by parsing BLS using the legacy scheme, then send it to network\n"
         "  revoke                   - Create and send ProUpRevTx to network\n"

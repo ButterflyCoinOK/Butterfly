@@ -7,6 +7,7 @@
 
 #include <amount.h>
 #include <serialize.h>
+#include <validation.h>
 
 #include <cassert>
 #include <string_view>
@@ -26,29 +27,32 @@ struct mntype_struct
 {
     const int32_t voting_weight;
     const CAmount collat_amount;
+    const CAmount new_collat_amount;
     const std::string_view description;
 };
 
 constexpr auto Regular = mntype_struct{
     .voting_weight = 1,
     .collat_amount = 20000 * COIN,
+    .new_collat_amount = 5000 * COIN,
     .description = "Regular",
 };
 constexpr auto Evo = mntype_struct{
     .voting_weight = 4,
     .collat_amount = 80000 * COIN,
+    .new_collat_amount = 20000 * COIN,
     .description = "Evo",
 };
 constexpr auto Invalid = mntype_struct{
     .voting_weight = 0,
     .collat_amount = MAX_MONEY,
+    .new_collat_amount = MAX_MONEY,
     .description = "Invalid",
 };
 
-[[nodiscard]] static constexpr bool IsCollateralAmount(CAmount amount)
+[[nodiscard]] static bool IsCollateralAmount(CAmount amount)
 {
-    return amount == Regular.collat_amount ||
-        amount == Evo.collat_amount;
+    return amount == Regular.collat_amount || amount == Regular.new_collat_amount;
 }
 
 } // namespace dmn_types

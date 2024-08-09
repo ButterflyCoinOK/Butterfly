@@ -981,10 +981,6 @@ void RPCConsole::updateMasternodeCount()
         .arg(QString::number(total_mn_count - total_evo_count))
         .arg(QString::number(total_enabled_mn_count - total_enabled_evo_count));
     ui->masternodeCount->setText(strMasternodeCount);
-    QString strEvoCount = tr("Total: %1 (Enabled: %2)")
-            .arg(QString::number(total_evo_count))
-            .arg(QString::number(total_enabled_evo_count));
-    ui->evoCount->setText(strEvoCount);
 }
 
 void RPCConsole::setMempoolSize(long numberOfTxs, size_t dynUsage)

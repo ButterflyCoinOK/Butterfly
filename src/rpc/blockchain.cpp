@@ -2396,7 +2396,7 @@ static UniValue getblockstats(const JSONRPCRequest& request)
     ret_all.pushKV("minfeerate", (minfeerate == MAX_MONEY) ? 0 : minfeerate);
     ret_all.pushKV("mintxsize", mintxsize == MaxBlockSize() ? 0 : mintxsize);
     ret_all.pushKV("outs", outputs);
-    ret_all.pushKV("subsidy", GetBlockSubsidy(pindex, Params().GetConsensus()));
+    ret_all.pushKV("subsidy", GetBlockSubsidy(pindex, Params().GetConsensus(), pindex->nHeight));
     ret_all.pushKV("time", pindex->GetBlockTime());
     ret_all.pushKV("total_out", total_out);
     ret_all.pushKV("total_size", total_size);

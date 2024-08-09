@@ -132,6 +132,10 @@ struct Params {
     int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
+    int nForkHeight;
+    int DevRewardStartHeight;
+    int DevelopementFundShare;
+    std::string DevelopmentFundAddress;
 
     /** these parameters are only used on devnet and can be configured from the outside */
     int nMinimumDifficultyBlocks{0};
