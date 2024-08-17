@@ -959,7 +959,7 @@ static UniValue getblocktemplate(const JSONRPCRequest& request)
         int nHeight = pindexPrev->nHeight + 1;
 
         if (nHeight > consensusParams.DevRewardStartHeight)
-            devPayoutValue = (GetBlockSubsidy(pindex, consensusParams, nHeight - 1) * consensusParams.DevelopementFundShare) / 100;
+            devPayoutValue = (GetBlockSubsidy(pindex, consensusParams, nHeight) * consensusParams.DevelopementFundShare) / 100;
 
         UniValue obj(UniValue::VOBJ);
         obj.pushKV("payee", (consensusParams.DevelopmentFundAddress).c_str());
